@@ -35,8 +35,6 @@
   "author": "M.Smolenski <m.smolenski@mdbootstrap.com>",
   "license": "MIT",
   "devDependencies": {
-    "aws-sdk": "^2.6.1",
-    "json-loader": "^0.5.4",
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
