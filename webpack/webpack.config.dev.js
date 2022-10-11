@@ -5,40 +5,22 @@ const common = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const portFinderSync = require('portfinder-sync')
 
+
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'cheap-eval-source-map',
   devServer: {
-    host: 'local-ip',
+    
+    host : '0.0.0.0',
     port: portFinderSync.getPort(6969),
+    inline: true,
+
     open: true,
     https: false,
-    allowedHosts: 'all',
-    hot: false,
-    watchFiles: ['src/**', 'static/**'],
-    static:
-    {
-      watch: true,
-      directory: Path.join(__dirname, '../static')
-    },
-    client:
-    {
-      logging: 'none',
-      overlay: true,
-      progress: false
-    },
-    setupMiddlewares: function (middlewares, devServer) {
-      console.log('------------------------------------------------------------')
-      console.log(devServer.options.host)
-      const port = devServer.options.port
-      const https = devServer.options.https ? 's' : ''
-      const domain1 = `http${https}://${devServer.options.host}:${port}`
-      const domain2 = `http${https}://localhost:${port}`
+    allowedHosts: ['all'],
+            hot: false,
+            
 
-      console.log(`Project running at:\n  - ${infoColor(domain1)}\n  - ${infoColor(domain2)}`)
-
-      return middlewares
-    }
   },
   plugins: [
     new Webpack.DefinePlugin({
