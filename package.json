@@ -42,7 +42,6 @@
     "@babel/preset-env": "^7.9.5",
     "autoprefixer": "^9.7.6",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.8.3",
@@ -60,8 +59,7 @@
     "husky": "^4.2.5",
     "jest": "^26.0.1",
     "lint-staged": "^10.2.4",
-    "mini-css-extract-plugin": "^0.9.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "mini-css-extract-plugin": "^2.6.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
@@ -76,15 +74,14 @@
     "stylelint-order": "^4.1.0",
     "stylelint-prettier": "^1.1.2",
     "stylelint-scss": "^3.17.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-fix-style-only-entries": "^0.5.1",
+    "webpack": "^5.72.0",
+    "webpack-dev-server": "^4.8.1",
+    "webpack-remove-empty-scripts": "^1.0.1",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.6.0",
+    "babel-loader": "^8.2.5",
     "chart.js": "^3.7.1",
     "chartjs-plugin-datalabels": "^2.0.0",
     "deepmerge": "^4.2.2",
@@ -92,6 +89,7 @@
     "mdb-ui-kit": "^4.0.0",
     "perfect-scrollbar": "^1.5.0",
     "popper.js": "^1.16.1",
-    "portfinder-sync": "^0.0.2"
+    "portfinder-sync": "^0.0.2",
+    "webpack-cli": "^4.10.0"
   }
 }

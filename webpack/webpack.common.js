@@ -1,8 +1,9 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const FixStyleOnlyEntriesPlugin = require('webpack-remove-empty-scripts');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -19,7 +20,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: Path.resolve(__dirname, '../src/index.html') },
-      { from: Path.resolve(__dirname, '../src/img'), to: 'img' },
+      { from: Path.resolve(__dirname, '../src/'), to: 'src' },
     ]),
     new FixStyleOnlyEntriesPlugin(),
     new MiniCssExtractPlugin({
