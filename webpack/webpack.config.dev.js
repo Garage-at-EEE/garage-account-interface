@@ -19,7 +19,7 @@ module.exports = merge(common, {
     static:
     {
       watch: true,
-      directory: path.join(__dirname, '../static')
+      directory: Path.join(__dirname, '../static')
     },
     client:
     {
