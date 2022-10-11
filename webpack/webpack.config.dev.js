@@ -9,7 +9,13 @@ module.exports = merge(common, {
   devtool: 'cheap-eval-source-map',
   devServer: {
     inline: true,
-    port: 6969,
+    host: 'local-ip',
+            port: portFinderSync.getPort(6969),
+            open: true,
+            https: false,
+            allowedHosts: 'all',
+            hot: false,
+            watchFiles: ['src/**', 'static/**'],
   },
   plugins: [
     new Webpack.DefinePlugin({
