@@ -40,7 +40,7 @@
 
   
   <div class="bg-image" style="
-    background-image: url('../src/img/lien.jpg');
+    background-image: url('../src/img/background.webp');
     height: 100vh;
   ">
   <div class="mask gradient-custom">
@@ -72,7 +72,7 @@
   function getMatric() {
     var matric = document.getElementById("matric").value;
     //alert(matric);
-    var url = "https://script.google.com/macros/s/AKfycbykrYENA_5HwCJgCGm_YYMU-2RWTeRZ25eQYT-ZRuv_vHMK2CPvbHSZxVH9Ywc85hk7/exec?Matric=" + matric;
+    var url = "https://script.google.com/macros/s/AKfycbzJ_j1Xmb1uj5AwABsEGN59v_uTpdUaA462MTB-RomrxTvsUuYiuW48uBmqRV0atKSF/exec?Matric=" + matric;
     fetch(url, { method: 'GET', redirect: 'follow' })
       .then((response) => response.json())
       .then((data) => document.getElementById('output').innerHTML = data);
