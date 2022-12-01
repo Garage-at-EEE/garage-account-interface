@@ -22,6 +22,8 @@
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
+
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
 
@@ -54,9 +56,9 @@
     background-image: url('../src/img/Background.jpg');
     height: 100vh;
   ">
-    <div class="mask gradient-custom">
+    <div class="mask gradient-custom" style="overflow-y:auto;">
       <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="p-3 mb-2 bg-light text-dark" style="border-radius: 15px;">
+        <div class="p-3 mb-2 bg-light text-dark" style="border-radius: 15px; max-width:95vw;">
           <h1>Garage Database</h1>
 
           <label for="matric">Matric Number:</label><br />
@@ -71,7 +73,7 @@
             <h4 id="position-output"></h4>
             <div id="event-data">
               <h3>Event Data</h4>
-                <table id="event-data-table" class="table table-striped" style="width:100%">
+                <table id="event-data-table" class="table table-striped" style="">
                   <thead>
                     <tr>
                       <th>Event Name</th>
@@ -109,7 +111,8 @@
       ordering: true,
       info: true,
       stripe: true,
-      autoWidth: true,
+      autoWidth: false,
+
 
     });
 
@@ -134,7 +137,9 @@
         if (data.hasOwnProperty('event_details')) {
           document.getElementById("event-data").style.display = "";
           data['event_details'].forEach((event, i) => {
-            table.row.add([event['event_name'], event['event_date'], event['event_description'], event['event_position']]).draw(false);
+            var parsedDate = new Date(Date.parse(event['event_date']));
+            var formattedDate = parsedDate.toLocaleDateString('en-GB');
+            table.row.add([event['event_name'], formattedDate, event['event_description'], event['event_position']]).draw(false);
           });
         }
 
