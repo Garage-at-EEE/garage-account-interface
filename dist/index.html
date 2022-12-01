@@ -15,49 +15,81 @@
   <!-- Main css file -->
   <link rel="stylesheet" href="css/index.min.css" />
   <!-- Custom styles -->
-  <style>.gradient-custom {
-    /* fallback for old browsers */
-    background: #a18cd1;
 
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(
-      45deg,
-      rgba(29, 236, 197, 0.6),
-      rgba(91, 14, 214, 0.6) 100%
-    );
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Cesium.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(
-      45deg,
-      rgba(29, 236, 197, 0.6),
-      rgba(91, 14, 214, 0.6) 100%
-    );
-  }</style>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+
+
+
+
+  <style>
+    .gradient-custom {
+      /* fallback for old browsers */
+      background: #a18cd1;
+
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: -webkit-linear-gradient(45deg,
+          rgba(29, 236, 197, 0.6),
+          rgba(91, 14, 214, 0.6) 100%);
+
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      background: linear-gradient(45deg,
+          rgba(29, 236, 197, 0.6),
+          rgba(91, 14, 214, 0.6) 100%);
+    }
+  </style>
 </head>
 
 <body>
   <!-- Start your project here-->
 
-  
+
   <div class="bg-image" style="
     background-image: url('../src/img/Background.jpg');
     height: 100vh;
   ">
-  <div class="mask gradient-custom">
-    <div class="d-flex justify-content-center align-items-center h-100">
-    <div class="p-3 mb-2 bg-light text-dark">
-      <h1 >Garage Database</h1>
+    <div class="mask gradient-custom">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="p-3 mb-2 bg-light text-dark" style="border-radius: 15px;">
+          <h1>Garage Database</h1>
 
-        <label for="matric">Matric Number:</label><br/>
-        <input type="text" id="matric" name="matric"><br/>
-        <br/>
-      <button type="button" onclick="getMatric(this)" class="btn btn-primary">Search</button>
-      <br/>
-      <h4 id="output"></h4>
-    </div>
+          <label for="matric">Matric Number:</label><br />
+          <input type="text" id="matric" name="matric"><br />
+          <label for="passcode">Passcode:</label><br />
+          <input type="text" id="passcode" name="passcode"><br />
+          <br />
+          <button type="button" onclick="getData(this)" class="btn btn-primary">Search</button>
+          <br />
+          <div style="margin:10px">
+            <h4 id="position-label">Position:</h4>
+            <h4 id="position-output"></h4>
+            <div id="event-data">
+              <h3>Event Data</h4>
+                <table id="event-data-table" class="table table-striped" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Event Name</th>
+                      <th>Event Date</th>
+                      <th>Description</th>
+                      <th>Event Position</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
-</div>
   <!-- End your project here-->
 </body>
 <!-- Main js file -->
@@ -68,17 +100,48 @@
 </html>
 
 <script type="text/javascript">
+  var table;
+  document.getElementById("event-data").style.display = "none";
+  document.getElementById("position-label").style.display = "none";
 
-  function getMatric() {
+  $(document).ready(function () {
+    table = $('#event-data-table').DataTable({
+      ordering: true,
+      info: true,
+      stripe: true,
+      autoWidth: true,
+
+    });
+
+    //t.row.add(['test1', 'test2', 'test3', 'test4']).draw(true);
+
+  });
+
+  function getData() {
+    table.clear().draw();
+    document.getElementById("event-data").style.display = "none";
     var matric = document.getElementById("matric").value;
+    var passcode = document.getElementById("passcode").value;
     //alert(matric);
-    var url = "https://script.google.com/macros/s/AKfycbzJ_j1Xmb1uj5AwABsEGN59v_uTpdUaA462MTB-RomrxTvsUuYiuW48uBmqRV0atKSF/exec?Matric=" + matric;
+
+    var url = "https://script.google.com/macros/s/AKfycbzXoLUWrI9Q1BPyCkPWojd4w4qlyLm2gMYe1JeG0eTPleEXmSP097KDLeP8ONLiBU23/exec?Matric=" + matric + "&Passcode=" + passcode;
     fetch(url, { method: 'GET', redirect: 'follow' })
       .then((response) => response.json())
-      .then((data) => document.getElementById('output').innerHTML = data);
-    //document.getElementById('output').innerHTML = xmlHttp.response;
+      .then((data) => {
+        document.getElementById("position-label").style.display = "";
+        document.getElementById('position-output').innerHTML = data['portfolio'];
 
-    //alert(xmlHttp.responseType);
+        if (data.hasOwnProperty('event_details')) {
+          document.getElementById("event-data").style.display = "";
+          data['event_details'].forEach((event, i) => {
+            table.row.add([event['event_name'], event['event_date'], event['event_description'], event['event_position']]).draw(false);
+          });
+        }
+
+      }
+      );
+
+
+
   }
 </script>
-
