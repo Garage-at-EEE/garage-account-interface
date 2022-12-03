@@ -45,6 +45,22 @@
           rgba(29, 236, 197, 0.6),
           rgba(91, 14, 214, 0.6) 100%);
     }
+
+    #card-background {
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(3.5px);
+      -webkit-backdrop-filter: blur(3.5px);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .input-field {
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
   </style>
 </head>
 
@@ -56,23 +72,26 @@
     background-image: url('../src/img/Background.jpg');
     height: 100vh;
   ">
-    <div class="mask gradient-custom" style="overflow-y:auto;">
+    <div class="mask gradient-custom">
       <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="p-3 mb-2 bg-light text-dark" style="border-radius: 15px; max-width:95vw;">
+        <div id="card-background" class="p-3 mb-2 text-dark"
+          style="border-radius: 15px; max-width:95vw; max-height:95vh; overflow-y:auto; ">
           <h1>Garage Database</h1>
 
           <label for="matric">Matric Number:</label><br />
-          <input type="text" id="matric" name="matric"><br />
+          <input type="text" id="matric" name="matric" class="input-field"><br />
           <label for="passcode">Passcode:</label><br />
-          <input type="text" id="passcode" name="passcode"><br />
+          <input type="password" id="passcode" name="passcode" class="input-field"><br />
           <br />
           <button type="button" onclick="getData(this)" class="btn btn-primary">Search</button>
           <br />
           <div style="margin:10px">
-            <h4 id="position-label">Position:</h4>
-            <h4 id="position-output"></h4>
+            <h4 id="position-label">Position</h4>
+            <h3 id="position-output"></h4>
             <div id="event-data">
-              <h3>Event Data</h4>
+              <br />
+              <hr class="rounded">
+              <h4>Event Data</h4>
                 <table id="event-data-table" class="table table-striped" style="">
                   <thead>
                     <tr>
