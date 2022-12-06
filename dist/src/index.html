@@ -23,7 +23,7 @@
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
   <script src="https://cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
 
-  
+
 
 
 
@@ -97,6 +97,10 @@
     .table {
       width: 100%;
     }
+
+    #big-loading-icon{
+      width: 100%; display: flex; justify-content: center; position: absolute; top: 50%; z-index: 2
+    }
   </style>
 </head>
 
@@ -110,7 +114,14 @@
   ">
     <div class="mask gradient-custom">
       <div class="d-flex justify-content-center align-items-center h-100">
+        <div id="big-loading-icon" class="xyz-in" xyz="fade down stagger delay-8">
+          <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+
         <div id="card-background" class="p-3 mb-2 text-dar xyz-in" xyz="fade down stagger delay-2">
+
           <div style="margin: 2rem;">
             <h1 class="xyz-in" xyz="fade down stagger delay-4">Garage Database</h1>
             <div id="main-row" class="row" xyz="fade small stagger ease-out-back delay-3">
@@ -146,7 +157,8 @@
               </h5>
               <br />
               <h5 class="xyz-nested">
-                If there are any discrepancies or questions, please approach the steering committee. Their contact can be found <a
+                If there are any discrepancies or questions, please approach the steering committee. Their contact can
+                be found <a
                   href="https://docs.google.com/document/d/1T1iR2LxDQnzeH4At9pcpRMfGkGOJJmv5lJP0eihMbIA/edit?usp=sharing"
                   target="_blank">here</a>.
               </h5>
@@ -169,6 +181,8 @@
           </div>
 
         </div>
+
+
       </div>
     </div>
     <!-- End your project here-->
@@ -187,6 +201,7 @@
   eventdata.style.display = "none";
   document.getElementById("position-label").style.display = "none";
   document.getElementById("loading-icon").style.display = "none";
+  document.getElementById("big-loading-icon").style.display = "none";
   var mainrow = document.getElementById("main-row");
 
   mainrow.style.display = "";
@@ -199,7 +214,7 @@
       info: true,
       stripe: true,
       autoWidth: false,
-      "columnDefs" : [{"targets":1, "type":"date-eu"}],
+      "columnDefs": [{ "targets": 1, "type": "date-eu" }],
 
 
     });
@@ -209,10 +224,17 @@
   });
 
   function getData() {
-    document.getElementById("loading-icon").style.display = "";
-    
     var matric = document.getElementById("matric").value;
     var passcode = document.getElementById("passcode").value;
+
+    if (matric == ""){
+      alert("Please input a matric number!");
+      return;
+    }
+
+    document.getElementById("loading-icon").style.display = "";
+    document.getElementById("big-loading-icon").style.display = "flex";
+
     //alert(matric);
     mainrow.classList.remove("xyz-in");
     mainrow.classList.add("xyz-out");
@@ -238,6 +260,7 @@
           });
         }
         document.getElementById("loading-icon").style.display = "none";
+        document.getElementById("big-loading-icon").style.display = "none";
         mainrow.style.display = "";
         mainrow.classList.remove("xyz-out");
         mainrow.classList.add("xyz-in");
