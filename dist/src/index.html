@@ -51,8 +51,27 @@
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
       backdrop-filter: blur(3.5px);
       -webkit-backdrop-filter: blur(3.5px);
-      border-radius: 10px;
+      border-radius: 15px;
       border: 1px solid rgba(255, 255, 255, 0.18);
+      max-width: 95vw;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    .highlight-card {
+      background: rgba(37, 37, 37, 0.05);
+      box-shadow: 0 8px 32px 0 rgba(46, 48, 77, 0.001);
+      border-radius: 15px;
+      border: 1px solid rgba(232, 232, 232, 0.18);
+      max-width: 95vw;
+      max-height: 95vh;
+      padding: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      margin-bottom: 2rem;
     }
 
     .input-field {
@@ -60,6 +79,17 @@
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
       border-radius: 5px;
       border: 1px solid rgba(255, 255, 255, 0.18);
+      font-size: 1.5rem;
+      width:100%;
+      
+    }
+
+    .input-label {
+      font-size: 1.5rem;
+    }
+
+    .table{
+      width: 100%;
     }
   </style>
 </head>
@@ -74,25 +104,40 @@
   ">
     <div class="mask gradient-custom">
       <div class="d-flex justify-content-center align-items-center h-100">
-        <div id="card-background" class="p-3 mb-2 text-dark"
-          style="border-radius: 15px; max-width:95vw; max-height:95vh; overflow-y:auto; ">
-          <h1>Garage Database</h1>
+        <div id="card-background" class="p-3 mb-2 text-dark">
+          <div style="margin: 2rem;">
+            <h1>Garage Database</h1>
+            <div id="main-row" class="row">
+              <div style="width: 45%; min-width: 18rem;">
+                <div class="highlight-card">
 
-          <label for="matric">Matric Number:</label><br />
-          <input type="text" id="matric" name="matric" class="input-field"><br />
-          <label for="passcode">Passcode:</label><br />
-          <input type="password" id="passcode" name="passcode" class="input-field"><br />
-          <br />
-          <button type="button" onclick="getData(this)" class="btn btn-primary">Search</button>
-          <br />
-          <div style="margin:10px">
-            <h4 id="position-label">Position</h4>
-            <h3 id="position-output"></h4>
-            <div id="event-data">
-              <br />
-              <hr class="rounded">
-              <h4>Event Data</h4>
-                <table id="event-data-table" class="table table-striped" style="">
+                <label for="matric" class="input-label">Matric Number:</label><br />
+                <input type="text" id="matric" name="matric" class="input-field"><br />
+                <label for="passcode" class="input-label">Passcode:</label><br />
+                <input type="password" id="passcode" name="passcode" class="input-field"><br />
+                <br />
+                <button type="button" onclick="getData(this)" class="btn btn-primary">
+                  <span id="loading-icon" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  Search
+                </button>
+                <br />
+              </div>
+              </div>
+              <div id="position-label" style="width: 55%; min-width: 18rem;">
+                <div  class="highlight-card">
+                  <h4>Position</h4>
+                  <h3 id="position-output">
+                </div>
+              </div>
+              <br/>
+              <h5>
+                You can access useful links and active projects <a href="https://docs.google.com/spreadsheets/d/1NySf7f0fnP1B3ovtn0MUM01i6ETc7FWDXXrSXU1ilGM/edit#gid=0" target="_blank">here</a>, through the Garage ambassador handbook
+              </h5>
+              <div id="event-data" style="overflow-x:auto;">
+                <br />
+                <hr class="rounded">
+                <h4>Event Data</h4>
+                <table id="event-data-table" class="table table-striped">
                   <thead>
                     <tr>
                       <th>Event Name</th>
@@ -103,15 +148,15 @@
                   </thead>
                   <tbody>
                   </tbody>
-            </div>
+              </div>
 
+            </div>
           </div>
 
         </div>
       </div>
     </div>
-  </div>
-  <!-- End your project here-->
+    <!-- End your project here-->
 </body>
 <!-- Main js file -->
 <script type="text/javascript" src="js/index.min.js"></script>
@@ -124,6 +169,8 @@
   var table;
   document.getElementById("event-data").style.display = "none";
   document.getElementById("position-label").style.display = "none";
+  document.getElementById("loading-icon").style.display = "none";
+  document.getElementById("main-row").style.display = "inline-block";
 
   $(document).ready(function () {
     table = $('#event-data-table').DataTable({
@@ -140,6 +187,7 @@
   });
 
   function getData() {
+    document.getElementById("loading-icon").style.display = "";
     table.clear().draw();
     document.getElementById("event-data").style.display = "none";
     var matric = document.getElementById("matric").value;
@@ -161,11 +209,11 @@
             table.row.add([event['event_name'], formattedDate, event['event_description'], event['event_position']]).draw(false);
           });
         }
+        document.getElementById("loading-icon").style.display = "none";
+        document.getElementById("main-row").style.display = "";
 
       }
       );
-
-
 
   }
 </script>
