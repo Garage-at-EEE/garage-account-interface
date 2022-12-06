@@ -21,11 +21,17 @@
 
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+
+  
 
 
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@animxyz/core">
+
 
 
 
@@ -80,15 +86,15 @@
       border-radius: 5px;
       border: 1px solid rgba(255, 255, 255, 0.18);
       font-size: 1.5rem;
-      width:100%;
-      
+      width: 100%;
+
     }
 
     .input-label {
       font-size: 1.5rem;
     }
 
-    .table{
+    .table {
       width: 100%;
     }
   </style>
@@ -104,12 +110,11 @@
   ">
     <div class="mask gradient-custom">
       <div class="d-flex justify-content-center align-items-center h-100">
-        <div id="card-background" class="p-3 mb-2 text-dark">
+        <div id="card-background" class="p-3 mb-2 text-dar xyz-in" xyz="fade down stagger delay-2">
           <div style="margin: 2rem;">
-            <h1>Garage Database</h1>
-            <div id="main-row" class="row">
-              <div style="width: 45%; min-width: 18rem;">
-                <div class="highlight-card">
+            <h1 class="xyz-in" xyz="fade down stagger delay-4">Garage Database</h1>
+            <div id="main-row" class="row" xyz="fade small stagger ease-out-back delay-3">
+              <div id="login-card" class="highlight-card xyz-nested" style="min-width: 18rem;">
 
                 <label for="matric" class="input-label">Matric Number:</label><br />
                 <input type="text" id="matric" name="matric" class="input-field"><br />
@@ -122,35 +127,45 @@
                 </button>
                 <br />
               </div>
-              </div>
-              <div id="position-label" style="width: 55%; min-width: 18rem;">
-                <div  class="highlight-card">
+              <div id="position-label" style="width: 55%; min-width: 18rem;" class="xyz-nested">
+                <div class="highlight-card">
                   <h4>Position</h4>
                   <h3 id="position-output">
                 </div>
               </div>
-              <br/>
-              <h5>
-                You can access useful links and active projects <a href="https://docs.google.com/spreadsheets/d/1NySf7f0fnP1B3ovtn0MUM01i6ETc7FWDXXrSXU1ilGM/edit#gid=0" target="_blank">here</a>, through the Garage ambassador handbook
-              </h5>
-              <div id="event-data" style="overflow-x:auto;">
-                <br />
-                <hr class="rounded">
-                <h4>Event Data</h4>
-                <table id="event-data-table" class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Event Name</th>
-                      <th>Event Date</th>
-                      <th>Description</th>
-                      <th>Event Position</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-              </div>
 
             </div>
+
+            <div id="event-data" style="overflow-x:auto;" xyz="fade small stagger">
+
+              <br />
+              <h5 class="xyz-nested">
+                You can access useful links and active projects <a
+                  href="https://docs.google.com/spreadsheets/d/1NySf7f0fnP1B3ovtn0MUM01i6ETc7FWDXXrSXU1ilGM/edit#gid=0"
+                  target="_blank">here</a>, through the Garage ambassador handbook
+              </h5>
+              <br />
+              <h5 class="xyz-nested">
+                If there are any discrepancies or questions, please approach the steering committee. Their contact can be found <a
+                  href="https://docs.google.com/document/d/1T1iR2LxDQnzeH4At9pcpRMfGkGOJJmv5lJP0eihMbIA/edit?usp=sharing"
+                  target="_blank">here</a>.
+              </h5>
+              <hr class="rounded xyz-nested">
+              <h4>Event Data</h4>
+              <table id="event-data-table" class="table table-striped xyz-nested">
+                <thead>
+                  <tr>
+                    <th>Event Name</th>
+                    <th>Event Date</th>
+                    <th>Description</th>
+                    <th>Event Position</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </div>
+
+
           </div>
 
         </div>
@@ -167,10 +182,16 @@
 
 <script type="text/javascript">
   var table;
-  document.getElementById("event-data").style.display = "none";
+  document.getElementById("login-card").style.width = "100%";
+  var eventdata = document.getElementById("event-data");
+  eventdata.style.display = "none";
   document.getElementById("position-label").style.display = "none";
   document.getElementById("loading-icon").style.display = "none";
-  document.getElementById("main-row").style.display = "inline-block";
+  var mainrow = document.getElementById("main-row");
+
+  mainrow.style.display = "";
+  mainrow.classList.add("xyz-in");
+
 
   $(document).ready(function () {
     table = $('#event-data-table').DataTable({
@@ -178,6 +199,7 @@
       info: true,
       stripe: true,
       autoWidth: false,
+      "columnDefs" : [{"targets":1, "type":"date-eu"}],
 
 
     });
@@ -188,16 +210,22 @@
 
   function getData() {
     document.getElementById("loading-icon").style.display = "";
-    table.clear().draw();
-    document.getElementById("event-data").style.display = "none";
+    
     var matric = document.getElementById("matric").value;
     var passcode = document.getElementById("passcode").value;
     //alert(matric);
+    mainrow.classList.remove("xyz-in");
+    mainrow.classList.add("xyz-out");
+    eventdata.classList.remove("xyz-in");
+    eventdata.classList.add("xyz-out");
+
+    //document.getElementById("event-data").style.display = "none";
 
     var url = "https://script.google.com/macros/s/AKfycbzXoLUWrI9Q1BPyCkPWojd4w4qlyLm2gMYe1JeG0eTPleEXmSP097KDLeP8ONLiBU23/exec?Matric=" + matric + "&Passcode=" + passcode;
     fetch(url, { method: 'GET', redirect: 'follow' })
       .then((response) => response.json())
       .then((data) => {
+        table.clear().draw();
         document.getElementById("position-label").style.display = "";
         document.getElementById('position-output').innerHTML = data['portfolio'];
 
@@ -210,7 +238,12 @@
           });
         }
         document.getElementById("loading-icon").style.display = "none";
-        document.getElementById("main-row").style.display = "";
+        mainrow.style.display = "";
+        mainrow.classList.remove("xyz-out");
+        mainrow.classList.add("xyz-in");
+        eventdata.classList.remove("xyz-out");
+        eventdata.classList.add("xyz-in");
+        document.getElementById("login-card").style.width = "45%";
 
       }
       );
