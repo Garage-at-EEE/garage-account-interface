@@ -101,6 +101,19 @@
     #big-loading-icon{
       width: 100%; display: flex; justify-content: center; position: absolute; top: 50%; z-index: 2
     }
+
+    .badge-image {
+      width: 10rem;
+      height: 14rem;
+      padding: 0.2rem;
+      margin:auto;
+    }
+
+    #badge-carousel {
+      max-height: 30rem;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
   </style>
 </head>
 
@@ -138,16 +151,27 @@
                 </button>
                 <br />
               </div>
-              <div id="position-label" style="width: 55%; min-width: 18rem;" class="xyz-nested">
-                <div class="highlight-card">
-                  <h4>Position</h4>
-                  <h3 id="position-output">
+
+              <div style="width: 55%; min-width: 18rem;">
+                <div id="badge-card"  class="xyz-nested">
+                  <div class="highlight-card">
+                    <h4>Certificates</h4>
+                    <div id="badge-carousel" class="row"></div>
+                  </div>
+                </div>
+  
+                <div id="position-label" class="xyz-nested">
+                  <div class="highlight-card">
+                    <h4>Position</h4>
+                    <h3 id="position-output">
+                  </div>
                 </div>
               </div>
+              
 
             </div>
 
-            <div id="event-data" style="overflow-x:auto;" xyz="fade small stagger">
+            <div id="event-data" style="overflow-y:auto;" xyz="fade small stagger">
 
               <br />
               <h5 class="xyz-nested">
@@ -200,6 +224,7 @@
   var eventdata = document.getElementById("event-data");
   eventdata.style.display = "none";
   document.getElementById("position-label").style.display = "none";
+  document.getElementById("badge-card").style.display = "none";
   document.getElementById("loading-icon").style.display = "none";
   document.getElementById("big-loading-icon").style.display = "none";
   var mainrow = document.getElementById("main-row");
@@ -243,15 +268,27 @@
 
     //document.getElementById("event-data").style.display = "none";
 
-    var url = "https://script.google.com/macros/s/AKfycbzXoLUWrI9Q1BPyCkPWojd4w4qlyLm2gMYe1JeG0eTPleEXmSP097KDLeP8ONLiBU23/exec?Matric=" + matric + "&Passcode=" + passcode;
+    var url = "https://script.google.com/macros/s/AKfycbwTiPYHVFpVqyTXEQ62W2k4-ea_oPkQ5OqWt8_5AXejKYiJacf8cW4Jdc34pVG5_2N6/exec?Matric=" + matric + "&Passcode=" + passcode;
     fetch(url, { method: 'GET', redirect: 'follow' })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         table.clear().draw();
         document.getElementById("position-label").style.display = "";
         document.getElementById('position-output').innerHTML = data['portfolio'];
+        document.getElementById("badge-carousel").innerHTML = '';
 
-        if (data.hasOwnProperty('event_details')) {
+        if (data['certificate_details'] !== undefined && data['event_details'].length != 0){
+          document.getElementById("badge-card").style.display = "";
+          data['certificate_details'].forEach((badge, i) => {
+            var div = document.getElementById('badge-carousel');
+
+            div.innerHTML += '<div class="badge-image xyz-in"  xyz="fade small stagger ease-out-back delay-15"><img class="xyz-in" src="' + badge['certificate_badge_link'] + '" alt="Italian Trulli" style="max-width:100%;"> <h4 class="xyz-in" style="text-align: center;">' + badge['certificate_name'] + '</h4></div>';
+            
+          });
+        }
+
+        if (data['event_details'] !== undefined && data['event_details'].length != 0){
           document.getElementById("event-data").style.display = "";
           data['event_details'].forEach((event, i) => {
             var parsedDate = new Date(Date.parse(event['event_date']));
@@ -259,6 +296,9 @@
             table.row.add([event['event_name'], formattedDate, event['event_description'], event['event_position']]).draw(false);
           });
         }
+
+        
+
         document.getElementById("loading-icon").style.display = "none";
         document.getElementById("big-loading-icon").style.display = "none";
         mainrow.style.display = "";
