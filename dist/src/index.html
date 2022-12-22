@@ -267,8 +267,9 @@
     eventdata.classList.add("xyz-out");
 
     //document.getElementById("event-data").style.display = "none";
+    var endpoint = "https://script.google.com/macros/s/AKfycbx6skB4CDpwVLKxKFz1wAn911Tv2uqvl_rJCElL7AaRzLvwugrl1MauoM-fxD0ANLpG/exec"
+    var url = endpoint + "?Matric=" + matric + "&Passcode=" + passcode;
 
-    var url = "https://script.google.com/macros/s/AKfycbwTiPYHVFpVqyTXEQ62W2k4-ea_oPkQ5OqWt8_5AXejKYiJacf8cW4Jdc34pVG5_2N6/exec?Matric=" + matric + "&Passcode=" + passcode;
     fetch(url, { method: 'GET', redirect: 'follow' })
       .then((response) => response.json())
       .then((data) => {
