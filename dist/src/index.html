@@ -7,7 +7,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <title>Garage Database Interface</title>
   <!-- Favicon -->
-  <link rel="icon" href="img/Garage.ico" type="image/x-icon" />
+  <link rel="icon" href="src/img/Garage.ico" type="image/x-icon" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
   <!-- Google Fonts Roboto -->
@@ -15,23 +15,40 @@
   <!-- Main css file -->
   <link rel="stylesheet" href="css/index.min.css" />
   <!-- Custom styles -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
 
-  <script src="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Cesium.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
   <script src="https://cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+  <script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
 
 
 
 
 
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.1/purify.min.js"
+    integrity="sha512-TU4FJi5o+epsahLtM9OFRvH2gXmmlzGlysk9wtTFgbYbMvFzh3Cw1l3ubnYIvBiZCC/aurRHS408TeEbcuOoyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+    integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"
+    integrity="sha512-03CCNkeosDFN2zCCu4vLpu3pJfZcrL48F3yB8k87ejT+OVMwco7IH3FW02vtbGhdncS6gyYZ/duYaC/K62xQPQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+
+
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@animxyz/core">
 
@@ -209,7 +226,8 @@
                 </tbody>
               </table>
               <div id="editor"></div>
-              <button type="button" onclick="downloadPDF(this)" class="btn btn-primary">
+              <button type="button" onclick="
+                table.button( '.buttons-pdf' ).trigger();" class="btn btn-primary">
                 Download
               </button>
             </div>
@@ -232,6 +250,7 @@
 </html>
 
 <script type="text/javascript">
+
   var table;
   document.getElementById("login-card").style.width = "100%";
   var eventdata = document.getElementById("event-data");
@@ -260,6 +279,13 @@
       stripe: true,
       autoWidth: false,
       "columnDefs": [{ "targets": 1, "type": "date-eu" }],
+      buttons: [
+        {
+          extend: 'pdfHtml5',
+          orientation: 'portrait',
+          pageSize: 'A4'
+        }
+      ]
 
 
     });
@@ -268,19 +294,18 @@
 
   });
 
-  function downloadPDF() {
-    var doc = new jsPDF();
-    var specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      }
-    };
-    doc.fromHTML($('#event-data-table').html(), 15, 15, {
-      'width': 170,
-      'elementHandlers': specialElementHandlers
-    });
-    doc.save('sample-file.pdf');
-  }
+  // function downloadPDF() {
+  //   var doc = new jsPDF('portrait', 'pt', 'a4');
+
+  //   doc.autoTable({
+  //     html: '#event-data-table',
+  //     startY: 70,
+  //     theme: 'grid',
+
+  //   })
+  //   doc.save("table.pdf");
+
+  // }
 
   function getData() {
     var matric = document.getElementById("matric").value;
