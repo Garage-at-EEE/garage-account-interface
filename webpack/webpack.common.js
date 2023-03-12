@@ -3,7 +3,7 @@ const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-remove-empty-scripts');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -16,7 +16,7 @@ module.exports = {
   },
   plugins: [
     new Webpack.ProvidePlugin({
-      'mdb': 'mdb',
+      mdb: 'mdb',
     }),
     new CopyWebpackPlugin([
       { from: Path.resolve(__dirname, '../src/index.html') },
@@ -30,7 +30,7 @@ module.exports = {
   resolve: {
     alias: {
       '~': Path.resolve(__dirname, '../src'),
-      'mdb': Path.join(__dirname, '../node_modules/mdb-ui-kit'),
+      mdb: Path.join(__dirname, '../node_modules/mdb-ui-kit'),
     },
   },
   module: {
