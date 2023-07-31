@@ -189,6 +189,8 @@
                   <div class="highlight-card">
                     <h4>Position</h4>
                     <h3 id="position-output">
+                      <h4>Inno Credits</h4>
+                      <h3 id="points-output">
                   </div>
                 </div>
               </div>
@@ -200,16 +202,13 @@
 
               <br />
               <h5 class="xyz-nested">
-                You can access useful links and active projects <a
-                  href="https://docs.google.com/spreadsheets/d/1NySf7f0fnP1B3ovtn0MUM01i6ETc7FWDXXrSXU1ilGM/edit#gid=0"
-                  target="_blank">here</a>, through the Garage ambassador handbook
+                You can access useful links and active projects <a href="linktr.ee/garage_tools"
+                  target="_blank">here</a>, through the <b>Garage Ambassador Handbook📚</b>
               </h5>
               <br />
               <h5 class="xyz-nested">
                 If there are any discrepancies or questions, please approach the steering committee. Their contact can
-                be found <a
-                  href="https://docs.google.com/document/d/1T1iR2LxDQnzeH4At9pcpRMfGkGOJJmv5lJP0eihMbIA/edit?usp=sharing"
-                  target="_blank">here</a>.
+                be found inside the <b>Garage Ambassador Handbook📚</b>.
               </h5>
               <hr class="rounded xyz-nested">
               <h4>Event Data</h4>
@@ -220,6 +219,7 @@
                     <th>Event Date</th>
                     <th>Description</th>
                     <th>Event Position</th>
+                    <th>Inno Credits</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -326,7 +326,7 @@
     eventdata.classList.add("xyz-out");
 
     //document.getElementById("event-data").style.display = "none";
-    var endpoint = "https://script.google.com/macros/s/AKfycbwT8I2puii69_SBmNzJCdqzqcHReD9J6bMEzf9ScaHxTn-Rl55ZHmjJnBMfHI5SKrOl/exec"
+    var endpoint = "https://script.google.com/macros/s/AKfycbxygzbFqiS9AU_cjlBK3GoUtSNnz3eYSg_mpuFDQfCcg91sPRFW7ELUsJSfeDMjW5hj/exec"
     var url = endpoint + "?Matric=" + matric + "&Passcode=" + passcode;
 
     fetch(url, { method: 'GET', redirect: 'follow' })
@@ -336,9 +336,10 @@
         table.clear().draw();
         document.getElementById("position-label").style.display = "";
         document.getElementById('position-output').innerHTML = data['portfolio'];
+        document.getElementById('points-output').innerHTML = data['total_points'];
         document.getElementById("badge-carousel").innerHTML = '';
 
-        if (data['certificate_details'] !== undefined && data['event_details'].length != 0) {
+        if (data['certificate_details'] !== undefined && data['certificate_details'].length != 0) {
           document.getElementById("badge-card").style.display = "";
           data['certificate_details'].forEach((badge, i) => {
             var div = document.getElementById('badge-carousel');
@@ -353,7 +354,7 @@
           data['event_details'].forEach((event, i) => {
             var parsedDate = new Date(Date.parse(event['event_date']));
             var formattedDate = parsedDate.toLocaleDateString('en-GB');
-            table.row.add([event['event_name'], formattedDate, event['event_description'], event['event_position']]).draw(false);
+            table.row.add([event['event_name'], formattedDate, event['event_description'], event['event_position'], event['event_point']]).draw(false);
           });
         }
 
